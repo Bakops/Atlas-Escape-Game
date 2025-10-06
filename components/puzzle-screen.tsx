@@ -1,51 +1,59 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Lightbulb, ArrowLeft, CheckCircle2, XCircle } from "lucide-react"
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { ArrowLeft, CheckCircle2, Lightbulb, XCircle } from "lucide-react";
+import { useState } from "react";
 
 export interface Puzzle {
-  id: string
-  continent: string
-  type: "word" | "number" | "directions" | "clock"
-  question: string
-  clues: string[]
-  answer: string
-  decoy?: string
-  culturalFacts: string[]
+  id: string;
+  continent: string;
+  type: "word" | "number" | "directions" | "clock";
+  question: string;
+  clues: string[];
+  answer: string;
+  decoy?: string;
+  culturalFacts: string[];
 }
 
 interface PuzzleScreenProps {
-  puzzle: Puzzle
-  onSolve: (fragment: string) => void
-  onBack: () => void
-  hintsUsed: number
-  onUseHint: () => void
+  puzzle: Puzzle;
+  onSolve: (fragment: string) => void;
+  onBack: () => void;
+  hintsUsed: number;
+  onUseHint: () => void;
 }
 
-export function PuzzleScreen({ puzzle, onSolve, onBack, hintsUsed, onUseHint }: PuzzleScreenProps) {
-  const [userAnswer, setUserAnswer] = useState("")
-  const [showClues, setShowClues] = useState(false)
-  const [feedback, setFeedback] = useState<"correct" | "incorrect" | null>(null)
+export function PuzzleScreen({
+  puzzle,
+  onSolve,
+  onBack,
+  hintsUsed,
+  onUseHint,
+}: PuzzleScreenProps) {
+  const [userAnswer, setUserAnswer] = useState("");
+  const [showClues, setShowClues] = useState(false);
+  const [feedback, setFeedback] = useState<"correct" | "incorrect" | null>(
+    null
+  );
 
   const handleSubmit = () => {
     if (userAnswer.toUpperCase() === puzzle.answer.toUpperCase()) {
-      setFeedback("correct")
+      setFeedback("correct");
       setTimeout(() => {
-        onSolve(puzzle.answer.charAt(0))
-      }, 1500)
+        onSolve(puzzle.answer.charAt(0));
+      }, 1500);
     } else {
-      setFeedback("incorrect")
-      setTimeout(() => setFeedback(null), 2000)
+      setFeedback("incorrect");
+      setTimeout(() => setFeedback(null), 2000);
     }
-  }
+  };
 
   const handleUseHint = () => {
-    onUseHint()
-    setShowClues(true)
-  }
+    onUseHint();
+    setShowClues(true);
+  };
 
   return (
     <div className="relative z-10 flex items-center justify-center min-h-screen px-4 pt-24 pb-8">
@@ -63,17 +71,20 @@ export function PuzzleScreen({ puzzle, onSolve, onBack, hintsUsed, onUseHint }: 
               Retour
             </Button>
             <div className="bg-primary/10 px-4 py-2 rounded-full">
-              <span className="text-sm font-bold text-primary">{puzzle.continent}</span>
+              <span className="text-sm font-bold text-primary">
+                {puzzle.continent}
+              </span>
             </div>
           </div>
 
           {/* Question */}
           <div className="bg-primary/5 rounded-3xl p-6 space-y-4">
             <h3 className="text-xl font-bold text-primary">Énigme</h3>
-            <p className="text-foreground leading-relaxed text-lg">{puzzle.question}</p>
+            <p className="text-foreground leading-relaxed text-lg">
+              {puzzle.question}
+            </p>
           </div>
 
-          {/* Clues */}
           {showClues && (
             <div className="bg-accent/10 rounded-3xl p-6 space-y-3 animate-in fade-in slide-in-from-top-4 duration-500">
               <h4 className="text-sm font-bold text-accent flex items-center gap-2">
@@ -82,7 +93,10 @@ export function PuzzleScreen({ puzzle, onSolve, onBack, hintsUsed, onUseHint }: 
               </h4>
               <ul className="space-y-2">
                 {puzzle.clues.slice(0, hintsUsed).map((clue, index) => (
-                  <li key={index} className="text-foreground text-sm leading-relaxed">
+                  <li
+                    key={index}
+                    className="text-foreground text-sm leading-relaxed"
+                  >
                     • {clue}
                   </li>
                 ))}
@@ -90,11 +104,10 @@ export function PuzzleScreen({ puzzle, onSolve, onBack, hintsUsed, onUseHint }: 
             </div>
           )}
 
-          {/* Answer input */}
           <div className="space-y-4">
             <div className="space-y-2">
               <label className="text-sm font-medium text-foreground">
-                {puzzle.type === "word" && "Entrez le mot (5 lettres)"}
+                {puzzle.type === "word" && "Entrez le mot (9 lettres)"}
                 {puzzle.type === "number" && "Entrez les chiffres"}
                 {puzzle.type === "directions" && "Entrez la séquence (↑↓←→)"}
                 {puzzle.type === "clock" && "Entrez l'heure (HH:MM)"}
@@ -104,15 +117,17 @@ export function PuzzleScreen({ puzzle, onSolve, onBack, hintsUsed, onUseHint }: 
                   puzzle.type === "word"
                     ? "XXXXX"
                     : puzzle.type === "number"
-                      ? "1234"
-                      : puzzle.type === "clock"
-                        ? "12:00"
-                        : "↑↓←→"
+                    ? "1234"
+                    : puzzle.type === "clock"
+                    ? "12:00"
+                    : "↑↓←→"
                 }
                 value={userAnswer}
                 onChange={(e) => setUserAnswer(e.target.value)}
                 className="rounded-full border-2 border-primary/20 focus:border-primary h-14 text-center font-bold text-xl text-foreground bg-background"
-                maxLength={puzzle.type === "word" ? 5 : puzzle.type === "clock" ? 5 : 10}
+                maxLength={
+                  puzzle.type === "word" ? 9 : puzzle.type === "clock" ? 9 : 10
+                }
               />
             </div>
 
@@ -120,7 +135,9 @@ export function PuzzleScreen({ puzzle, onSolve, onBack, hintsUsed, onUseHint }: 
             {feedback && (
               <div
                 className={`flex items-center justify-center gap-2 p-4 rounded-2xl animate-in fade-in zoom-in duration-300 ${
-                  feedback === "correct" ? "bg-accent/20 text-accent" : "bg-destructive/20 text-destructive"
+                  feedback === "correct"
+                    ? "bg-accent/20 text-accent"
+                    : "bg-destructive/20 text-destructive"
                 }`}
               >
                 {feedback === "correct" ? (
@@ -162,12 +179,13 @@ export function PuzzleScreen({ puzzle, onSolve, onBack, hintsUsed, onUseHint }: 
           {puzzle.decoy && (
             <div className="bg-muted/50 rounded-2xl p-4 text-center">
               <p className="text-xs text-muted-foreground">
-                Attention : un élément peut être trompeur. Vérifiez vos indices !
+                Attention : un élément peut être trompeur. Vérifiez vos indices
+                !
               </p>
             </div>
           )}
         </div>
       </Card>
     </div>
-  )
+  );
 }

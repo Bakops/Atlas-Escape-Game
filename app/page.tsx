@@ -1,13 +1,12 @@
 "use client";
-
-import { useState, useEffect } from "react";
 import { GameHeader } from "@/components/game-header";
-import { WorldMap, type Continent } from "@/components/world-map";
 import { PuzzleScreen, type Puzzle } from "@/components/puzzle-screen";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { Users, Play, Trophy } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { WorldMap, type Continent } from "@/components/world-map";
+import { Play, Trophy, Users } from "lucide-react";
+import { useEffect, useState } from "react";
 
 type GameScreen =
   | "welcome"
@@ -24,13 +23,13 @@ const PUZZLES: Record<string, Puzzle> = {
     continent: "Europe",
     type: "word",
     question:
-      "Dans quelle langue dit-on 'Bonjour' de cette façon : 'Guten Tag' ? Entrez le nom du pays en 5 lettres.",
+      "Dans quelle langue dit-on 'Bonjour' de cette façon : 'Guten Tag' ? Entrez le nom du pays en 9 lettres.",
     clues: [
       "Ce pays est situé au centre de l'Europe",
       "Sa capitale est Berlin",
       "Le mot recherché commence par A",
     ],
-    answer: "ALLEM",
+    answer: "ALLEMAGNE",
     decoy: "AUTRICHE (7 lettres, pas 5)",
     culturalFacts: [
       "L'allemand est parlé dans plusieurs pays européens",
@@ -63,7 +62,7 @@ const PUZZLES: Record<string, Puzzle> = {
       "On le joue avec les mains",
       "Son nom commence par D",
     ],
-    answer: "DJEMB",
+    answer: "DJEMBÉ",
     culturalFacts: [
       "Le djembé est un symbole culturel important en Afrique de l'Ouest",
     ],
@@ -103,6 +102,15 @@ export default function Home() {
       name: "Afrique",
       emoji: "🦁",
       position: { x: 40, y: 60 },
+      locked: true,
+      completed: false,
+      image: "/african-safari.png",
+    },
+    {
+      id: "america",
+      name: "Amérique",
+      emoji: "🦁",
+      position: { x: 70, y: 80 },
       locked: true,
       completed: false,
       image: "/african-safari.png",
@@ -314,7 +322,7 @@ export default function Home() {
       )}
 
       {screen === "map" && (
-        <div className="relative z-10 min-h-screen pt-24 pb-8">
+        <div className="relative z-10 min-h-screen pt-[9rem] pb-8">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold text-card mb-2">
               Choisissez votre destination
